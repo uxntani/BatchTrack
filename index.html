@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BatchTrack — Tutor Assistant</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Google Fonts: Sora (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════
+       AUTH SCREEN
+  ════════════════════════════════════ -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-bg-shapes">
+      <span class="shape s1"></span>
+      <span class="shape s2"></span>
+      <span class="shape s3"></span>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon"><i class="ph-bold ph-graduation-cap"></i></div>
+        <span>EduTrack</span>
+      </div>
+
+      <!-- Login Form -->
+      <div id="login-form" class="auth-form active">
+        <h2>Welcome back 👋</h2>
+        <p class="auth-sub">Sign in to your teaching dashboard</p>
+        <div class="field-group">
+          <label>Email</label>
+          <div class="input-wrap"><i class="ph ph-envelope"></i>
+            <input type="email" id="login-email" placeholder="teacher@school.com"/>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <div class="input-wrap"><i class="ph ph-lock"></i>
+            <input type="password" id="login-password" placeholder="••••••••"/>
+          </div>
+        </div>
+        <div id="login-error" class="auth-error hidden"></div>
+        <button class="btn-primary btn-full" onclick="handleLogin()">Sign In</button>
+        <p class="auth-switch">Don't have an account? <a onclick="switchAuth('register')">Register</a></p>
+      </div>
+
+      <!-- Register Form -->
+      <div id="register-form" class="auth-form">
+        <h2>Create account ✨</h2>
+        <p class="auth-sub">Set up your teaching workspace</p>
+        <div class="field-group">
+          <label>Full Name</label>
+          <div class="input-wrap"><i class="ph ph-user"></i>
+            <input type="text" id="reg-name" placeholder="Your name"/>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Email</label>
+          <div class="input-wrap"><i class="ph ph-envelope"></i>
+            <input type="email" id="reg-email" placeholder="teacher@school.com"/>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <div class="input-wrap"><i class="ph ph-lock"></i>
+            <input type="password" id="reg-password" placeholder="Min. 6 characters"/>
+          </div>
+        </div>
+        <div id="reg-error" class="auth-error hidden"></div>
+        <button class="btn-primary btn-full" onclick="handleRegister()">Create Account</button>
+        <p class="auth-switch">Already have an account? <a onclick="switchAuth('login')">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       APP SHELL (Dashboard)
+  ════════════════════════════════════ -->
+  <div id="app-shell" class="app-shell hidden">
+
+    <!-- Mobile Top Bar -->
+    <header class="mobile-header">
+      <button class="hamburger" onclick="toggleSidebar()"><i class="ph-bold ph-list"></i></button>
+      <div class="auth-logo small">
+        <div class="logo-icon"><i class="ph-bold ph-graduation-cap"></i></div>
+        <span>BatchTrack</span>
+      </div>
+      <div class="avatar" id="mobile-avatar"></div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="auth-logo">
+          <div class="logo-icon"><i class="ph-bold ph-graduation-cap"></i></div>
+          <span>BatchTrack</span>
+        </div>
+        <button class="close-sidebar" onclick="toggleSidebar()"><i class="ph-bold ph-x"></i></button>
+      </div>
+
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="avatar" id="sidebar-avatar"></div>
+        <div>
+          <div class="user-name" id="sidebar-name">Teacher</div>
+          <div class="user-role">Tuition Teacher</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-section="dashboard" onclick="navigate('dashboard')">
+          <i class="ph-bold ph-squares-four"></i> Dashboard
+        </a>
+        <a class="nav-item" data-section="batches" onclick="navigate('batches')">
+          <i class="ph-bold ph-books"></i> Batches
+        </a>
+        <a class="nav-item" data-section="students" onclick="navigate('students')">
+          <i class="ph-bold ph-student"></i> Students
+        </a>
+        <a class="nav-item" data-section="notes" onclick="navigate('notes')">
+          <i class="ph-bold ph-note-pencil"></i> Notes
+        </a>
+        <a class="nav-item" data-section="tests" onclick="navigate('tests')">
+          <i class="ph-bold ph-exam"></i> Tests
+        </a>
+        <a class="nav-item" data-section="leaderboard" onclick="navigate('leaderboard')">
+          <i class="ph-bold ph-trophy"></i> Leaderboard
+        </a>
+        <a class="nav-item" data-section="badges" onclick="navigate('badges')">
+          <i class="ph-bold ph-medal"></i> Badges
+        </a>
+      </nav>
+
+      <button class="logout-btn" onclick="handleLogout()">
+        <i class="ph-bold ph-sign-out"></i> Logout
+      </button>
+    </aside>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content">
+
+      <!-- ── DASHBOARD ── -->
+      <section id="section-dashboard" class="section active">
+        <div class="page-header">
+          <div>
+            <h1 id="dash-greeting">Good morning!</h1>
+            <p class="page-sub">Here's your classroom overview.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card c1">
+            <div class="stat-icon"><i class="ph-bold ph-books"></i></div>
+            <div class="stat-info">
+              <span id="stat-batches">0</span>
+              <label>Batches</label>
+            </div>
+          </div>
+          <div class="stat-card c2">
+            <div class="stat-icon"><i class="ph-bold ph-student"></i></div>
+            <div class="stat-info">
+              <span id="stat-students">0</span>
+              <label>Students</label>
+            </div>
+          </div>
+          <div class="stat-card c3">
+            <div class="stat-icon"><i class="ph-bold ph-exam"></i></div>
+            <div class="stat-info">
+              <span id="stat-tests">0</span>
+              <label>Tests</label>
+            </div>
+          </div>
+          <div class="stat-card c4">
+            <div class="stat-icon"><i class="ph-bold ph-note-pencil"></i></div>
+            <div class="stat-info">
+              <span id="stat-notes">0</span>
+              <label>Notes</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-two-col">
+          <!-- Recent Students -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Students</h3>
+              <a onclick="navigate('students')" class="see-all">See all</a>
+            </div>
+            <div id="dash-students" class="dash-list"></div>
+          </div>
+          <!-- Top Performers -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Top Performers</h3>
+              <a onclick="navigate('leaderboard')" class="see-all">See all</a>
+            </div>
+            <div id="dash-leaderboard" class="dash-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── BATCHES ── -->
+      <section id="section-batches" class="section">
+        <div class="page-header">
+          <div>
+            <h1>Batches</h1>
+            <p class="page-sub">Organise students into learning groups.</p>
+          </div>
+          <button class="btn-primary" onclick="openModal('batch-modal')">
+            <i class="ph-bold ph-plus"></i> New Batch
+          </button>
+        </div>
+        <div id="batches-grid" class="cards-grid"></div>
+      </section>
+
+      <!-- ── STUDENTS ── -->
+      <section id="section-students" class="section">
+        <div class="page-header">
+          <div>
+            <h1>Students</h1>
+            <p class="page-sub">Manage your enrolled students.</p>
+          </div>
+          <button class="btn-primary" onclick="openModal('student-modal')">
+            <i class="ph-bold ph-plus"></i> Add Student
+          </button>
+        </div>
+        <div class="filter-bar">
+          <select id="student-batch-filter" onchange="renderStudents()">
+            <option value="">All Batches</option>
+          </select>
+          <input type="text" id="student-search" placeholder="Search students…" oninput="renderStudents()"/>
+        </div>
+        <div id="students-grid" class="cards-grid"></div>
+      </section>
+
+      <!-- ── NOTES ── -->
+      <section id="section-notes" class="section">
+        <div class="page-header">
+          <div>
+            <h1>Notes</h1>
+            <p class="page-sub">Share study materials with students.</p>
+          </div>
+          <button class="btn-primary" onclick="openModal('note-modal')">
+            <i class="ph-bold ph-plus"></i> Add Note
+          </button>
+        </div>
+        <div id="notes-grid" class="cards-grid"></div>
+      </section>
+
+      <!-- ── TESTS ── -->
+      <section id="section-tests" class="section">
+        <div class="page-header">
+          <div>
+            <h1>Tests</h1>
+            <p class="page-sub">Create MCQ tests and track results.</p>
+          </div>
+          <button class="btn-primary" onclick="openModal('test-modal')">
+            <i class="ph-bold ph-plus"></i> Create Test
+          </button>
+        </div>
+        <div id="tests-grid" class="cards-grid"></div>
+      </section>
+
+      <!-- ── LEADERBOARD ── -->
+      <section id="section-leaderboard" class="section">
+        <div class="page-header">
+          <div>
+            <h1>Leaderboard</h1>
+            <p class="page-sub">Students ranked by total test scores.</p>
+          </div>
+        </div>
+        <div class="card leaderboard-card">
+          <div id="leaderboard-list"></div>
+        </div>
+      </section>
+
+      <!-- ── BADGES ── -->
+      <section id="section-badges" class="section">
+        <div class="page-header">
+          <div>
+            <h1>Badges</h1>
+            <p class="page-sub">Recognise and reward student achievements.</p>
+          </div>
+        </div>
+        <div class="badge-legend">
+          <div class="badge-legend-item">
+            <span class="badge-icon gold">🏆</span>
+            <div><strong>Top Performer</strong><p>Score ≥ 80% on any test</p></div>
+          </div>
+          <div class="badge-legend-item">
+            <span class="badge-icon blue">📚</span>
+            <div><strong>Consistent Learner</strong><p>Attempted 3+ tests</p></div>
+          </div>
+          <div class="badge-legend-item">
+            <span class="badge-icon green">⭐</span>
+            <div><strong>Rising Star</strong><p>Score ≥ 60% on first attempt</p></div>
+          </div>
+          <div class="badge-legend-item">
+            <span class="badge-icon purple">🎯</span>
+            <div><strong>Perfect Score</strong><p>100% on any test</p></div>
+          </div>
+        </div>
+        <div id="badges-grid" class="cards-grid"></div>
+      </section>
+
+    </main><!-- /main-content -->
+  </div><!-- /app-shell -->
+
+
+  <!-- ═══════════════ MODALS ═══════════════ -->
+
+  <!-- Batch Modal -->
+  <div id="batch-modal" class="modal-overlay" onclick="overlayClose(event,'batch-modal')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>New Batch</h3>
+        <button onclick="closeModal('batch-modal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="field-group">
+        <label>Batch Name</label>
+        <div class="input-wrap"><i class="ph ph-books"></i>
+          <input type="text" id="batch-name" placeholder="e.g. Class 10 – Maths"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Subject</label>
+        <div class="input-wrap"><i class="ph ph-chalkboard-teacher"></i>
+          <input type="text" id="batch-subject" placeholder="e.g. Mathematics"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('batch-modal')">Cancel</button>
+        <button class="btn-primary" onclick="addBatch()">Create Batch</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Modal -->
+  <div id="student-modal" class="modal-overlay" onclick="overlayClose(event,'student-modal')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Student</h3>
+        <button onclick="closeModal('student-modal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="field-group">
+        <label>Full Name</label>
+        <div class="input-wrap"><i class="ph ph-user"></i>
+          <input type="text" id="student-name" placeholder="Student's full name"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Email</label>
+        <div class="input-wrap"><i class="ph ph-envelope"></i>
+          <input type="email" id="student-email" placeholder="student@email.com"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Assign to Batch</label>
+        <div class="input-wrap"><i class="ph ph-books"></i>
+          <select id="student-batch">
+            <option value="">— Select Batch —</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('student-modal')">Cancel</button>
+        <button class="btn-primary" onclick="addStudent()">Add Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Note Modal -->
+  <div id="note-modal" class="modal-overlay" onclick="overlayClose(event,'note-modal')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Note / Material</h3>
+        <button onclick="closeModal('note-modal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="field-group">
+        <label>Title</label>
+        <div class="input-wrap"><i class="ph ph-note-pencil"></i>
+          <input type="text" id="note-title" placeholder="e.g. Algebra Chapter 3 Notes"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Batch</label>
+        <div class="input-wrap"><i class="ph ph-books"></i>
+          <select id="note-batch">
+            <option value="">— All Batches —</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>File Link (URL or description)</label>
+        <div class="input-wrap"><i class="ph ph-link"></i>
+          <input type="text" id="note-link" placeholder="https://drive.google.com/…"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Description</label>
+        <div class="input-wrap"><i class="ph ph-text-align-left"></i>
+          <input type="text" id="note-desc" placeholder="Short description"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('note-modal')">Cancel</button>
+        <button class="btn-primary" onclick="addNote()">Add Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Creation Modal -->
+  <div id="test-modal" class="modal-overlay" onclick="overlayClose(event,'test-modal')">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h3>Create MCQ Test</h3>
+        <button onclick="closeModal('test-modal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="field-group">
+        <label>Test Title</label>
+        <div class="input-wrap"><i class="ph ph-exam"></i>
+          <input type="text" id="test-title" placeholder="e.g. Mid-term Algebra Quiz"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Assign to Batch</label>
+        <div class="input-wrap"><i class="ph ph-books"></i>
+          <select id="test-batch">
+            <option value="">— Select Batch —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="questions-builder" id="questions-builder"></div>
+      <button class="btn-add-q" onclick="addQuestionField()">
+        <i class="ph-bold ph-plus-circle"></i> Add Question
+      </button>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('test-modal')">Cancel</button>
+        <button class="btn-primary" onclick="saveTest()">Save Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Attempt Modal -->
+  <div id="attempt-modal" class="modal-overlay" onclick="overlayClose(event,'attempt-modal')">
+    <div class="modal modal-wide" id="attempt-modal-inner">
+      <!-- Populated dynamically -->
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
