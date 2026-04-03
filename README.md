@@ -103,4 +103,59 @@ One planned feature is the generation of a certificate after test completion. On
 
 ---
 
-## 📸 Screenshots
+## 📸 Website Snapshots
+
+### 📊 Dashboard:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/dashboard.png)
+
+---
+
+### ➕ Create Batch:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/batch_creation.png)
+
+---
+
+### 📋 View Batches:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/view_batch.png)
+
+---
+
+### ➕ Create Student:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/add_students.png)
+
+---
+
+### 👥 View Students:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/view_students.png)
+
+---
+
+### 🔗 Upload Notes:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/upload_notes.png)
+
+---
+
+### 📑 View Notes:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/view_notes.png)
+
+---
+
+### ✒️ Create MCQ Test:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/create_test.png)
+
+---
+
+### 📃 View / Attempt Test: 
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/view_test.png)
+
+---
+
+### 📈 Leaderboard:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/leaderboard.png)
+
+---
+
+### 🥇 Assigned Badges:
+![Screenshot](https://raw.githubusercontent.com/uxntani/BatchTrack/refs/heads/main/assets/student_badges.png)
+
+---
